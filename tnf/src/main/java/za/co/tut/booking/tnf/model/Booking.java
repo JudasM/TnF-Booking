@@ -1,5 +1,6 @@
 package za.co.tut.booking.tnf.model;
 
+
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ public class Booking {
     @JoinColumn(name = "email", referencedColumnName = "email")
     private User user;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
     @ManyToOne
@@ -30,7 +31,12 @@ public class Booking {
     public Booking() {
     }
 
-   
+    @PrePersist
+    protected void onCreate(){
+        LocalDateTime now = LocalDateTime.now();
+        createdAt = now;
+    }
+
 
     public Booking(User user, LocalDateTime createdAt, BookedItem bookedItem, String status) {
         this.user = user;
